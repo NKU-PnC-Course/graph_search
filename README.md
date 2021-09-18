@@ -12,7 +12,7 @@ $ catkin_init_workspace
 $ cd ~/catkin_ws/src/
 $ git clone https://github.com/NKU-MobFly-Robotics/graph_search.git
 ```
-完成程序编写后先编译：
+完成GraphSearch类后，编译程序：
 ```
 $ cd ~/catkin_ws/
 $ catkin_make
