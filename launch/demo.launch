@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+
+<launch>
+  <param name="/use_sim_time" value="false" />
+
+  <node pkg="graph_search" type="graph_search" name="graph_search" output="screen"/>
+
+  <node name="map_server" pkg="map_server" type="map_server" args="$(find graph_search)/maps/shopping_mall/map.yaml" />
+
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find graph_search)/launch/demo.rviz" />
+
+</launch>
