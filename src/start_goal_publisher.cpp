@@ -8,8 +8,8 @@ int main(int argc, char* argv[])
   ros::init(argc, argv, "start_goal_publisher");
 
   ros::NodeHandle nh;
-  ros::Publisher start_pub = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("/initialpose", 1);
-  ros::Publisher goal_pub = nh.advertise<geometry_msgs::PoseStamped>("/move_base_simple/goal", 1);
+  ros::Publisher start_pub = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("/initialpose", 1, true);
+  ros::Publisher goal_pub = nh.advertise<geometry_msgs::PoseStamped>("/move_base_simple/goal", 1, true);
 
   // read initial and target pose
   ros::NodeHandle private_nh_("~");
@@ -46,24 +46,20 @@ int main(int argc, char* argv[])
   geometry_msgs::PoseStamped goal;
 
   start.header.frame_id = "map";
+  start.header.stamp = ros::Time::now();
   start.pose.pose.position.x = initial_pose_x;
   start.pose.pose.position.y = initial_pose_y;
   start.pose.pose.orientation = tf::createQuaternionMsgFromYaw(initial_pose_a);
   goal.header.frame_id = "map";
+  goal.header.stamp = ros::Time::now();
   goal.pose.position.x = goal_pose_x;
   goal.pose.position.y = goal_pose_y;
   goal.pose.orientation = tf::createQuaternionMsgFromYaw(goal_pose_a);
 
-  ros::Rate loop_rate(1);
-  while (ros::ok())
-  {
-    start.header.stamp = ros::Time::now();
-    goal.header.stamp = ros::Time::now();
-    start_pub.publish(start);
-    goal_pub.publish(goal);
-    ros::spinOnce();
-    loop_rate.sleep();
-  }
+  start_pub.publish(start);
+  goal_pub.publish(goal);
+
+  ros::spin();
 
   return 0;
 }
